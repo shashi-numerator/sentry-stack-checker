@@ -25,7 +25,7 @@ class TestSentryStackChecker(pylint.testutils.CheckerTestCase):
     def test_non_reported_logging_method_ignored(self):
         """Test that logging methods not in report_loggers are ignored."""
         # Set up checker with only 'error' in report_loggers
-        self.checker.logging_methods_to_report = {'error'}
+        self.checker.linter.config.report_loggers = ['error']
         
         call_node = astroid.extract_node("""
 import logging
@@ -140,7 +140,6 @@ except:
         """Test that info() calls are ignored when not in report-loggers option."""
         # Configure checker to only report warn and error
         self.checker.linter.config.report_loggers = ['warn', 'error']
-        self.checker.logging_methods_to_report = {'warn', 'error'}
         
         call_node = astroid.extract_node("""
 import logging
@@ -158,7 +157,6 @@ except:
         """Test that warn() is reported when warning is in report-loggers."""
         # Configure checker to report warning (which should include warn)
         self.checker.linter.config.report_loggers = ['warning']
-        self.checker.logging_methods_to_report = {'warn', 'warning'}
         
         call_node = astroid.extract_node("""
 import logging
