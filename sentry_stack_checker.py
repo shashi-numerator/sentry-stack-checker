@@ -113,14 +113,14 @@ class SentryStackChecker(BaseChecker):
         ),
     )
 
-    def __init__(self, linter):
-        """Initialize the checker."""
-        super().__init__(linter)
 
-        self.logging_methods_to_report = complete_logging_methods(
+    @property
+    def logging_methods_to_report(self):
+        """Get the logging methods to report."""
+        return complete_logging_methods(
                 self.linter.config.report_loggers
             )
-        
+
 
     @utils.only_required_for_messages(ADD_EXC_INFO, CHANGE_TO_EXC_INFO)
     def visit_call(self, node):
